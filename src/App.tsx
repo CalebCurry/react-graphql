@@ -2,22 +2,18 @@ import './App.css';
 import { useQuery, gql } from '@apollo/client';
 import { useEffect } from 'react';
 
-export type Launch = {
-    mission_name: string;
-    launch_date_local: string;
-    launch_site: {
-        site_name_long: string;
-    };
+export type Customer = {
+    id: number;
+    name: string;
+    industry: string;
 };
 
 const GET_DATA = gql`
     {
-        launchesPast(limit: 10) {
-            mission_name
-            launch_date_local
-            launch_site {
-                site_name_long
-            }
+        customers {
+            id
+            name
+            industry
         }
     }
 `;
@@ -30,13 +26,13 @@ function App() {
     });
     return (
         <div className="App">
+            {error ? <p>Something went wrong</p> : null}
+            {loading ? <p>loading...</p> : null}
             {data
-                ? data.launchesPast.map((launch: Launch) => {
+                ? data.customers.map((customer: Customer) => {
                       return (
-                          <p>
-                              {launch.mission_name +
-                                  ' ' +
-                                  launch.launch_date_local}
+                          <p key={customer.id}>
+                              {customer.name + ' ' + customer.industry}
                           </p>
                       );
                   })
