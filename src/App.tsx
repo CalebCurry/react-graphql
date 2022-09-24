@@ -46,7 +46,7 @@ function App() {
         ],
     });
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log(loading, error, data);
         console.log(
             createCustomer,
@@ -54,7 +54,7 @@ function App() {
             createCustomerError,
             createCustomerData
         );
-    });
+    });*/
     return (
         <div className="App">
             {error ? <p>Something went wrong</p> : null}
@@ -74,6 +74,10 @@ function App() {
                     createCustomer({
                         variables: { name: name, industry: industry },
                     });
+                    if (!error) {
+                        setName('');
+                        setIndustry('');
+                    }
                 }}
             >
                 <div>
@@ -98,7 +102,10 @@ function App() {
                         }}
                     />
                 </div>
-                <button>Add Customer</button>
+                <button disabled={createCustomerLoading ? true : false}>
+                    Add Customer
+                </button>
+                {createCustomerError ? <p>Error creating customer</p> : null}
             </form>
         </div>
     );
